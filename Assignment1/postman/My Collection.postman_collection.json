@@ -78,7 +78,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"url\": \"https://instagram.com\"\n}",
+          "raw": "{\n  \"value\": \"https://instagram.com\"\n}",
           "options": {
             "raw": {
               "language": "json"
