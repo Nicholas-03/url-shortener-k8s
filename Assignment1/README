@@ -23,7 +23,7 @@ Follow these steps from the project root directory:
     ```
 
 ## Running the Application
-### Termial 1
+### Terminal 1
 1. **Activate enviornment**
     ```bash
     # Mac/Linux
@@ -37,7 +37,7 @@ Follow these steps from the project root directory:
     flask --app src/app.py run --debug
     ```
 
-### Termial 2
+### Terminal 2
 1. **Activate enviornment**
     ```bash
     # Mac/Linux
