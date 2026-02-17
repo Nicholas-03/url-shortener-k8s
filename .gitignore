@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.mise.toml
 build/
 develop-eggs/
 dist/
