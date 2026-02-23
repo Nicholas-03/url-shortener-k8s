@@ -1,7 +1,6 @@
 import time, json
 import base64
 import hashlib, hmac
-import sys
 
 SECRET_KEY = "mySecretKey"
 
@@ -15,7 +14,7 @@ def createToken(username):
 
     payload = {
         "username": username,
-        "exp": int(time.time()) + 10 # in seconds
+        "exp": int(time.time()) + 3600 # in seconds
     }
     payloadJson = json.dumps(payload, separators=(',', ':')) # removes white spaces
     encodedPayload = base64.b64encode(payloadJson.encode('utf-8')).decode('utf-8')
@@ -36,6 +35,7 @@ def validateToken(token):
         # Split the JWT into its three parts
         parts = token.split('.')
         if len(parts) != 3:
+            print("Wrong length")
             return None
         
         encodedHeader, encodedPayload, encodedSignature = parts
@@ -51,6 +51,7 @@ def validateToken(token):
         
         # Compare signatures
         if encodedSignature != expectedSignature_b64:
+            print("Wrong signature")
             return None
         
         # Decode and parse the payload
@@ -59,6 +60,7 @@ def validateToken(token):
         
         # Check if token is expired
         if payload['exp'] < int(time.time()):
+            print("Token expired")
             return None
         
         # Return the username

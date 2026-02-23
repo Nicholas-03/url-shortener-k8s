@@ -75,6 +75,7 @@ def update(id):
         return jsonify("Error"), 400
 
     Url.urls[id]['url'] = url
+    Url.updateDatabase()
     return "", 200
 
 # DELETE /:id - Removes a specific URL
@@ -88,6 +89,7 @@ def deleteUrl(id):
 
     if id in Url.urls and Url.urls[id]['owner'] == username:
         del Url.urls[id]
+        Url.updateDatabase()
         return "", 204
     else:
         return jsonify("Not found"), 404
@@ -103,6 +105,8 @@ def deleteNull():
 
     Url.deleteAllUrls(username)
     return jsonify("Not Found"), 404
+
+Url.loadData(app)
 
 if __name__ == '__main__':
     app.run(debug=True, port=URL_SHORTENER_PORT)
