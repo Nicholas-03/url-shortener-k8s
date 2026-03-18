@@ -3,8 +3,9 @@ import os
 from utils import *
 from flask import Flask, request, jsonify
 from config import URL_SHORTENER_PORT
+from pathlib import Path
 
-INSTANCE_PATH = os.environ.get("INSTANCE_PATH", "/data/instance")
+INSTANCE_PATH = str((Path(__file__).resolve().parent / "instance").resolve())
 BIND_HOST = os.environ.get("BIND_HOST", "0.0.0.0")
 
 app = Flask(__name__, instance_path=INSTANCE_PATH)
