@@ -1,7 +1,68 @@
-# URL Shortener — Docker, Kubernetes & Endpoint Reference
+# url-shortener-k8s
+
+A production-style URL shortener built with a microservice architecture, containerized with Docker, and deployed on Kubernetes. The project covers the full stack from REST API design to cloud-native deployment.
+
+## Architecture
+
+```
+Client
+  │
+  ▼
+Nginx (reverse proxy, single entry point)
+  ├── /auth/*      → Auth Service (Flask, port 5001)
+  └── /shortener/* → Shortener Service (Flask, port 5000)
+```
+
+Two independent Flask microservices communicate internally. Nginx acts as the single public entry point, routing traffic by path prefix. Each service has its own persistent volume for data storage.
+
+## Skills demonstrated
+
+| Area | Details |
+|---|---|
+| **REST API design** | Full CRUD endpoints, correct HTTP verbs and status codes |
+| **Microservices** | Two decoupled services with internal service discovery |
+| **JWT (from scratch)** | HS256 token generation and validation using `hmac` + `base64` — no external JWT library |
+| **Authentication flow** | Token-based auth: login → JWT → protected endpoints via `Authorization` header |
+| **Docker** | Multi-service `docker-compose.yml`, custom Dockerfiles, named volumes for persistence |
+| **Kubernetes** | Deployment manifests, services, persistent volumes, multi-namespace management |
+| **Nginx** | Reverse proxy config, path-based routing, header forwarding |
+| **Python / Flask** | RESTful routing, JSON request/response handling, environment-based config |
+
+## Services
+
+### Auth Service
+Handles user lifecycle and token issuance.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/users` | Register a new user |
+| `POST` | `/users/login` | Login and receive a JWT |
+| `PUT` | `/users/` | Update password |
+| `POST` | `/validate` | Validate a JWT (used internally by the shortener) |
+
+### Shortener Service
+Manages shortened URLs. All endpoints except `GET /:id` require a valid JWT in the `Authorization` header.
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/` | List all URLs owned by the authenticated user |
+| `GET` | `/:id` | Resolve a short ID to its destination URL |
+| `POST` | `/` | Create a new shortened URL |
+| `PUT` | `/:id` | Update the destination of an existing short URL |
+| `DELETE` | `/:id` | Delete a specific short URL |
+| `DELETE` | `/` | Delete all URLs owned by the authenticated user |
+
+## Stack
+
+- **Python 3 / Flask** — microservice logic
+- **Nginx** — reverse proxy and single-port exposure
+- **Docker & Docker Compose** — containerization and local orchestration
+- **Kubernetes** — cluster deployment with `kubectl`
+- **JWT / HMAC-SHA256** — stateless authentication
+
+---
 
 ## 1) Docker Compose (start, inspect, and stop stack)
-These commands manage the containers defined in `docker-compose.yml`.
 
 ```bash
 # Start all services in the background and build images
@@ -18,7 +79,6 @@ docker compose -f docker-compose.yml down
 ```
 
 ## 2) Kubernetes - deployment and cluster status
-This group applies manifests and checks the overall status of the cluster and resources.
 
 ```bash
 # Verify the Kubernetes cluster is reachable
@@ -56,7 +116,6 @@ watch kubectl get -A pods
 ```
 
 ## 3) Kubernetes - detailed resource diagnostics
-Use `describe` to inspect events, configuration, errors, and internal state of deployments/pods/services.
 
 ```bash
 # Full details for a specific deployment
@@ -70,7 +129,6 @@ kubectl describe svc <service-name> -n <namespace>
 ```
 
 ## 4) Kubernetes - logs and pod verification
-Quick commands to read application logs and check where a pod is running.
 
 ```bash
 # Pod logs in current namespace
@@ -84,7 +142,6 @@ kubectl get pod <pod-name> -o wide
 ```
 
 ## 5) Application endpoint tests with curl
-These tests verify app reachability and responses via NodePort, public domain, or Host header (useful with Ingress/reverse proxy).
 
 ```bash
 # Test root endpoint via NodePort
@@ -104,7 +161,6 @@ curl -H "Host: app.nicholasboidi.tech" http://<public-vm-ip>/shortener/0
 ```
 
 ## 6) Node access and local container management
-This group is useful for troubleshooting directly on the node machine.
 
 ```bash
 # SSH into the node
@@ -118,7 +174,6 @@ docker restart <container-id>
 ```
 
 ## 7) Kubernetes resource cleanup
-Remove all resources defined by manifests applied from the current directory.
 
 ```bash
 # Delete resources created from YAML files in the current folder
@@ -146,12 +201,7 @@ kubectl delete -f .
 
 ### Read manifest files on the VM
 ```bash
-# Show internal services manifest
 cat ~/internal-services.yaml
-
-# Show nginx deployment/service manifest
 cat ~/nginx.yaml
-
-# Show nginx config map manifest
 cat ~/nginx-config.yaml
 ```
