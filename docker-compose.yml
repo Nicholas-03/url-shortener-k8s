@@ -1,6 +1,6 @@
 services:
   auth:
-    build: ./Assignment1/src/Auth
+    build: ./auth
     expose:
       - "5001"
     volumes:
@@ -9,7 +9,7 @@ services:
       - INSTANCE_PATH=/data/instance
 
   shortener:
-    build: ./Assignment1/src/Shortener
+    build: ./shortener
     expose:
       - "5000"
     volumes:
