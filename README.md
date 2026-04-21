@@ -1,6 +1,6 @@
 # url-shortener-k8s
 
-A production-style URL shortener built with a microservice architecture, containerized with Docker, and deployed on Kubernetes. The project covers the full stack from REST API design to cloud-native deployment.
+A production-style URL shortener built with a microservice architecture, containerized with Docker, and deployed on Kubernetes. The project covers the full stack from REST API design to cloud-native deployment. Built as part of a university Web Services course.
 
 ## Architecture
 
