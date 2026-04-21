@@ -1,4 +1,4 @@
-# Operational Commands - Docker, Kubernetes, and Endpoint Tests
+# URL Shortener — Docker, Kubernetes & Endpoint Reference
 
 ## 1) Docker Compose (start, inspect, and stop stack)
 These commands manage the containers defined in `docker-compose.yml`.
@@ -127,13 +127,13 @@ kubectl delete -f .
 
 ## 8) Files and manifests reference
 
-### Assignment 3.1 files
+### Docker Compose stack
 - `docker-compose.yml`
 - `default.conf`
 - `Dockerfile` (auth microservice)
 - `Dockerfile` (shortener microservice)
 
-### Assignment 3.2 files
+### Kubernetes manifests
 - `internal-services.yaml`
 - `nginx.yaml`
 - `nginx-config.yaml`
